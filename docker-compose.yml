@@ -1,0 +1,311 @@
+version: '3.5'
+networks:
+  fiware_workshop:
+    ipam:
+      config:
+        - subnet: 172.16.0.0/24
+
+services:
+  bft-iot-proxy_client_0:
+    image: bft-iot_1
+    hostname: bft-iot-proxy_client_0
+    container_name: bft-iot-proxy_client_0
+    depends_on:
+      - bft-iot-proxy_0
+    networks:
+      fiware_workshop:
+        ipv4_address: 172.16.0.200
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+    command: ["bft_iot.proxy.BFT_Broker_Client", "0", "8080"]
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  bft-iot-proxy_0:
+    image: bft-iot_1
+    hostname: bft-iot-proxy_0
+    container_name: bft-iot-proxy_0
+    depends_on:
+      - orion_0
+    networks:
+      fiware_workshop:
+        ipv4_address: 172.16.0.100
+    expose:
+      - "11000"
+      - "11001"
+    ports:
+      - "11000:11000"
+      - "11001:11001"
+    command: ["bft_iot.proxy.BFT_Broker_Proxy", "0"]
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  orion_0:
+    image: fiware/orion:latest
+    hostname: orion_0
+    container_name: fiware-orion_0
+    depends_on:
+      - mongo-db_0
+    networks:
+      - fiware_workshop
+    expose:
+      - "1026"
+    ports:
+      - "1026:1026" # localhost:1026
+    command: -dbhost mongo-db_0 -logLevel DEBUG
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  #    healthcheck:
+  #      test: curl --fail -s http://orion:1026/version || exit 1
+  #      interval: 5s
+
+  # Database
+  mongo-db_0:
+    image: mongo:latest
+    hostname: mongo-db_0
+    container_name: db-mongo_0
+    expose:
+      - "27017"
+    ports:
+      - "27017:27017" # localhost:27017
+    networks:
+      - fiware_workshop
+    volumes:
+      - mongo-db:/data_0
+        #    healthcheck:
+        #      test: |
+        #        host=`hostname --ip-address || echo '127.0.0.1'`;
+      #        mongo --quiet $host/test --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)' && echo 0 || echo 1
+      #      interval: 5s
+
+
+  bft-iot-proxy_client_1:
+    image: bft-iot_1
+    hostname: bft-iot-proxy_client_1
+    container_name: bft-iot-proxy_client_1
+    depends_on:
+      - bft-iot-proxy_1
+    networks:
+      fiware_workshop:
+        ipv4_address: 172.16.0.201
+    expose:
+      - "8080"
+    ports:
+      - "8081:8080"
+    command: ["bft_iot.proxy.BFT_Broker_Client", "1", "8080"]
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  bft-iot-proxy_1:
+    image: bft-iot_1
+    hostname: bft-iot-proxy_1
+    container_name: bft-iot-proxy_1
+    depends_on:
+      - orion_1
+      - bft-iot-proxy_0
+    networks:
+      fiware_workshop:
+        ipv4_address: 172.16.0.101
+    expose:
+      - "11010"
+      - "11011"
+    ports:
+      - "11010:11010"
+      - "11011:11011"
+    command: ["bft_iot.proxy.BFT_Broker_Proxy", "1"]
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  orion_1:
+    image: fiware/orion:latest
+    hostname: orion_1
+    container_name: fiware-orion_1
+    depends_on:
+      - mongo-db_1
+    networks:
+      - fiware_workshop
+    expose:
+      - "1026"
+    ports:
+      - "1027:1026" # localhost:1026
+    command: -dbhost mongo-db_1 -logLevel DEBUG
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  #    healthcheck:
+  #      test: curl --fail -s http://orion:1026/version || exit 1
+  #      interval: 5s
+
+  # Database
+  mongo-db_1:
+    image: mongo:latest
+    hostname: mongo-db_1
+    container_name: db-mongo_1
+    expose:
+      - "27017"
+    ports:
+      - "27018:27017" # localhost:27017
+    networks:
+      - fiware_workshop
+    volumes:
+      - mongo-db:/data_1
+        #    healthcheck:
+        #      test: |
+      #        host=`hostname --ip-address || echo '127.0.0.1'`;
+      #        mongo --quiet $host/test --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)' && echo 0 || echo 1
+      #      interval: 5s
+
+  bft-iot-proxy_client_2:
+    image: bft-iot_1
+    hostname: bft-iot-proxy_client_2
+    container_name: bft-iot-proxy_client_2
+    depends_on:
+      - bft-iot-proxy_2
+    networks:
+      fiware_workshop:
+        ipv4_address: 172.16.0.202
+    expose:
+      - "8080"
+    ports:
+      - "8082:8080"
+    command: ["bft_iot.proxy.BFT_Broker_Client", "2", "8080"]
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  bft-iot-proxy_2:
+    image: bft-iot_1
+    hostname: bft-iot-proxy_2
+    container_name: bft-iot-proxy_2
+    depends_on:
+      - orion_2
+      - bft-iot-proxy_0
+    networks:
+      fiware_workshop:
+        ipv4_address: 172.16.0.102
+    expose:
+      - "11020"
+      - "11021"
+    ports:
+      - "11020:11020"
+      - "11021:11021"
+    command: ["bft_iot.proxy.BFT_Broker_Proxy", "2"]
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  orion_2:
+    image: fiware/orion:latest
+    hostname: orion_2
+    container_name: fiware-orion_2
+    depends_on:
+      - mongo-db_2
+    networks:
+      - fiware_workshop
+    expose:
+      - "1026"
+    ports:
+      - "1028:1026" # localhost:1026
+    command: -dbhost mongo-db_2 -logLevel DEBUG
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  #    healthcheck:
+  #      test: curl --fail -s http://orion:1026/version || exit 1
+  #      interval: 5s
+
+  # Database
+  mongo-db_2:
+    image: mongo:latest
+    hostname: mongo-db_2
+    container_name: db-mongo_2
+    expose:
+      - "27017"
+    ports:
+      - "27019:27017" # localhost:27017
+    networks:
+      - fiware_workshop
+    volumes:
+      - mongo-db:/data_2
+        #    healthcheck:
+        #      test: |
+      #        host=`hostname --ip-address || echo '127.0.0.1'`;
+      #        mongo --quiet $host/test --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)' && echo 0 || echo 1
+      #      interval: 5s
+
+  bft-iot-proxy_client_3:
+    image: bft-iot_1
+    hostname: bft-iot-proxy_client_3
+    container_name: bft-iot-proxy_client_3
+    depends_on:
+      - bft-iot-proxy_3
+    networks:
+      fiware_workshop:
+        ipv4_address: 172.16.0.203
+    expose:
+      - "8080"
+    ports:
+      - "8083:8080"
+    command: ["bft_iot.proxy.BFT_Broker_Client", "3", "8080"]
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  bft-iot-proxy_3:
+    image: bft-iot_1
+    hostname: bft-iot-proxy_3
+    container_name: bft-iot-proxy_3
+    depends_on:
+      - orion_3
+      - bft-iot-proxy_0
+    networks:
+      fiware_workshop:
+        ipv4_address: 172.16.0.103
+    expose:
+      - "11030"
+      - "11031"
+    ports:
+      - "11030:11030"
+      - "11031:11031"
+    command: ["bft_iot.proxy.BFT_Broker_Proxy", "3"]
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  orion_3:
+    image: fiware/orion:latest
+    hostname: orion_3
+    container_name: fiware-orion_3
+    depends_on:
+      - mongo-db_3
+    networks:
+      - fiware_workshop
+    expose:
+      - "1026"
+    ports:
+      - "1029:1026" # localhost:1026
+    command: -dbhost mongo-db_3 -logLevel DEBUG
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  #    healthcheck:
+  #      test: curl --fail -s http://orion:1026/version || exit 1
+  #      interval: 5s
+
+  # Database
+  mongo-db_3:
+    image: mongo:latest
+    hostname: mongo-db_3
+    container_name: db-mongo_3
+    expose:
+      - "27017"
+    ports:
+      - "27020:27017" # localhost:27017
+    networks:
+      - fiware_workshop
+    volumes:
+      - mongo-db:/data_3
+        #    healthcheck:
+        #      test: |
+      #        host=`hostname --ip-address || echo '127.0.0.1'`;
+      #        mongo --quiet $host/test --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)' && echo 0 || echo 1
+      #      interval: 5s
+
+
+volumes:
+  mongo-db: ~
