@@ -187,6 +187,9 @@ public class OperationSet {
     }
 
     private String getAgreementValue(List<FiwareEntity> filtered_values) {
+        System.out.println("--------------- getAgreementValue ------------------");
+        System.out.println("--------------- getAgreementValue ------------------");
+        System.out.println("--------------- getAgreementValue ------------------");
         float humid_sum = 0;
         float temp_sum = 0;
 
@@ -200,6 +203,8 @@ public class OperationSet {
         HumidityEntityUpdate update = (HumidityEntityUpdate)filtered_values.get(0);
         update.humidity.value = humid_avg;
         update.temperature.value = temp_avg;
+        System.out.println("--------------- " + humid_avg);
+        System.out.println("--------------- " + temp_avg);
 
         return update.toString();
     }
