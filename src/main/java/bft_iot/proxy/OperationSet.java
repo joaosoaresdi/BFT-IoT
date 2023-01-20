@@ -2,6 +2,7 @@ package bft_iot.proxy;
 
 import bft_iot.json.entities.BFTIoTConfig;
 import bft_iot.json.entities.FiwareEntity;
+import bft_iot.json.entities.HumidityEntityUpdate;
 import bft_iot.operation.*;
 import org.json.JSONObject;
 
@@ -185,6 +186,24 @@ public class OperationSet {
         return false;
     }
 
+    private String getAgreementValue(List<FiwareEntity> filtered_values) {
+        float humid_sum = 0;
+        float temp_sum = 0;
+
+        for (FiwareEntity ent:filtered_values) {
+            humid_sum += ((HumidityEntityUpdate)ent).getHumidity().value;
+            temp_sum += ((HumidityEntityUpdate)ent).getTemperature().value;
+        }
+        float humid_avg = humid_sum / filtered_values.size();
+        float temp_avg = temp_sum / filtered_values.size();
+
+        HumidityEntityUpdate update = (HumidityEntityUpdate)filtered_values.get(0);
+        update.humidity.value = humid_avg;
+        update.temperature.value = temp_avg;
+
+        return update.toString();
+    }
+
     private boolean validateUpdate(BFTIoTConfig config) {
         System.out.println("\t --> validateUpdate : " + objectId);
         List<FiwareEntity> filtered_values = new LinkedList<FiwareEntity>();
@@ -203,7 +222,8 @@ public class OperationSet {
 
         if (filtered_values.size() >= (config.N - config.f)) {
             this.reachedAgreement = true;
-            agreementObj = filtered_values.get(0).toString();
+            agreementObj = getAgreementValue(filtered_values);
+            //agreementObj = filtered_values.get(0).toString();
             return true;
         }
 
