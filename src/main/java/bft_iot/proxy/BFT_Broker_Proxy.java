@@ -1,15 +1,10 @@
 package bft_iot.proxy;
 
+import bft_iot.json.entities.*;
 import bftsmart.tom.MessageContext;
 import bftsmart.tom.ServiceReplica;
 import bftsmart.tom.server.defaultservices.DefaultSingleRecoverable;
 import com.google.gson.Gson;
-import bft_iot.json.entities.BFTIoTConfig;
-import bft_iot.json.entities.FiwareEntity;
-import bft_iot.json.entities.HumidityEntityUpdate;
-import bft_iot.json.entities.HumiditySensorEntity;
-import bft_iot.json.entities.TrashEntityUpdate;
-import bft_iot.json.entities.TrashSensorEntity;
 import bft_iot.operation.ContextCreate;
 import bft_iot.operation.ContextOperation;
 import bft_iot.operation.ContextUpdate;
@@ -155,12 +150,18 @@ public class BFT_Broker_Proxy extends DefaultSingleRecoverable {
                 else if (op.getJsonRequest().getString("id").contains("trash")) {
                     fe = gson.fromJson(op.getJsonRequest().toString(), TrashSensorEntity.class);
                 }
+                else if (op.getJsonRequest().getString("id").contains("parking")) {
+                    fe = gson.fromJson(op.getJsonRequest().toString(), ParkingSensorEntity.class);
+                }
             }
             else if (op instanceof ContextUpdate) {
                 if (op.getObjectId().contains("humidity")) {
                     fe = gson.fromJson(op.getJsonRequest().toString(), HumidityEntityUpdate.class);
                 } else if (op.getObjectId().contains("trash")) {
                     fe = gson.fromJson(op.getJsonRequest().toString(), TrashEntityUpdate.class);
+                }
+                else if (op.getObjectId().contains("trash")) {
+                    fe = gson.fromJson(op.getJsonRequest().toString(), ParkingEntityUpdate.class);
                 }
             }
         } catch (Exception e) {

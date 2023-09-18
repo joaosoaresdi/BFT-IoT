@@ -222,7 +222,12 @@ public class BFT_Broker_Client {
                                 notify(url, fe);
                             }
                         } else if (req.body().contains("parking_sensor")) {
-
+                            ParkingSensorEntity fe = gson.fromJson(req.body(), ParkingSensorEntity.class);
+                            System.out.println(fe);
+                            client.createContext(fe);
+                            for (String url : notificationUrls) {
+                                notify(url, fe);
+                            }
                         } else {
 
                         }
@@ -255,6 +260,12 @@ public class BFT_Broker_Client {
                                 float humid_value = jsonObj.getJSONObject("humidity").getFloat("value");
                                 ((HumiditySensorEntity) fe).getTemperature().setTemperature(temp_value);
                                 ((HumiditySensorEntity) fe).getHumidity().setHumidity(humid_value);
+                                for (String url : notificationUrls) {
+                                    notify(url, fe);
+                                }
+                            } else if (fe instanceof ParkingSensorEntity) {
+                                int occupancy = jsonObj.getJSONObject("occupancy").getInt("value");
+                                ((ParkingSensorEntity) fe).getOccupancy().setValue(occupancy);
                                 for (String url : notificationUrls) {
                                     notify(url, fe);
                                 }

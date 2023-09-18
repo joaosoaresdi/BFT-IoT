@@ -33,3 +33,8 @@ And instantiate the necessary containers.
 
 Alternatively you can use the `docker-compose.yml` file to instanciate the necessary services for running an `f=1` configuration setup.
 
+## Updates and Modifications
+
+1. Create the corresponding Sensor Entity and Entity Update classes in bft_iot.json.entities
+2. Update BFT_Broker_Client to process corresponding entities
+3. Update BFT_Broker_Proxy to process corresponding entities and operations
