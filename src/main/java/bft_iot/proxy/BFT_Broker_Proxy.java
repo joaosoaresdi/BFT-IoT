@@ -164,7 +164,7 @@ public class BFT_Broker_Proxy extends DefaultSingleRecoverable {
                 } else if (op.getObjectId().contains("trash")) {
                     fe = gson.fromJson(op.getJsonRequest().toString(), TrashEntityUpdate.class);
                 }
-                else if (op.getObjectId().contains("trash")) {
+                else if (op.getObjectId().contains("parking")) {
                     fe = gson.fromJson(op.getJsonRequest().toString(), ParkingEntityUpdate.class);
                 }
             }

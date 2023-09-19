@@ -39,9 +39,10 @@ Alternatively you can use the `docker-compose.yml` file to instanciate the neces
 2. Update BFT_Broker_Client to process corresponding entities
 3. Update BFT_Broker_Proxy to process corresponding entities and operations
 4. `git add .`
-5. git commit -m "commit message"
-6. git push
+5. `git commit -m "commit message"`
+6. `git push`
 7. On each RaspberryPi nodes
-   1. git pull
-   2. docker build -t bft-iot_1 .
-   3. docker-compose up
+   1. `git pull`
+   2. `docker build -t bft-iot_1 .`
+   3. `docker-compose up`
+4. sudo systemctl restart hostapd
