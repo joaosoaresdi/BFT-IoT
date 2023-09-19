@@ -26,7 +26,7 @@ public class ParkingSensorEntity extends FiwareCreateEntity {
     }
 
     public String toString() {
-        return String.format("{'id':'%s', 'type':'%s', 'location':%s, 'ratio':%s}", id, type, location == null ? "null" : location.toString(), occupancy == null ? "null" : occupancy.toString());
+        return String.format("{'id':'%s', 'type':'%s', 'location':%s, 'occupancy':%s}", id, type, location == null ? "null" : location.toString(), occupancy == null ? "null" : occupancy.toString());
     }
 
     @Override
