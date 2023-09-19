@@ -12,7 +12,7 @@ public class ParkingEntityUpdate extends FiwareEntity {
     }
 
     public String toString() {
-        return String.format("{'ratio':%s}", occupancy == null ? "null" : occupancy.toString());
+        return String.format("{'occupancy':%s}", occupancy == null ? "null" : occupancy.toString());
     }
 
     @Override
@@ -24,7 +24,7 @@ public class ParkingEntityUpdate extends FiwareEntity {
 
     public class Occupancy {
         public int value;
-        public String type;
+        public String type = "Integer";
 
         public String toString() {
             return String.format("{'value':%d, 'type':'%s'}", value, type);
