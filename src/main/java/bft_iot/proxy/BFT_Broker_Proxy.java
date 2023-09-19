@@ -45,9 +45,11 @@ public class BFT_Broker_Proxy extends DefaultSingleRecoverable {
         Iterator<OperationSet> it = operationHistory.iterator();
         while(it.hasNext()) {
             OperationSet crt = it.next();
-            if(crt.canAdd(operation)) {
-                crt.addOperation(operation, fe);
-                return crt;
+            if (crt.isInstanceOf(fe)) {
+                if (crt.canAdd(operation)) {
+                    crt.addOperation(operation, fe);
+                    return crt;
+                }
             }
         }
         OperationSet set = new OperationSet(operation, fe);
@@ -167,6 +169,7 @@ public class BFT_Broker_Proxy extends DefaultSingleRecoverable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         OperationSet opSet = addToPending(op, fe);
 
         if (opSet.hasReachedAgreement(config)) {

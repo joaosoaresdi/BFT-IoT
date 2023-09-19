@@ -7,6 +7,10 @@ public class ParkingEntityUpdate extends FiwareEntity {
         this.occupancy = new Occupancy();
     }
 
+    public Occupancy getOccupancy() {
+        return occupancy;
+    }
+
     public String toString() {
         return String.format("{'ratio':%s}", occupancy == null ? "null" : occupancy.toString());
     }
