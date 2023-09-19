@@ -53,6 +53,8 @@ public class BFT_Broker_Proxy extends DefaultSingleRecoverable {
                     return crt;
                 }
             }
+            if (crt.canDelete)
+                it.remove();
         }
         OperationSet set = new OperationSet(operation, fe);
         operationHistory.addLast(set);

@@ -364,8 +364,10 @@ public class OperationSet {
         return false;
     }
 
+    public boolean canDelete = false;
     public String getAgreementJSON() {
         if (reachedAgreement) {
+            canDelete = true;
             return agreementObj.replace("'", "\"");
         } else return null;
     }
