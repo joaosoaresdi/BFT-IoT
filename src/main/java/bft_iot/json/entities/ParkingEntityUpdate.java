@@ -27,7 +27,7 @@ public class ParkingEntityUpdate extends FiwareEntity {
         public String type;
 
         public String toString() {
-            return String.format("{'value':%f, 'type':'%s'}", value, type);
+            return String.format("{'value':%d, 'type':'%s'}", value, type);
         }
 
     }
