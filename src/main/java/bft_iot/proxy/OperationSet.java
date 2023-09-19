@@ -35,6 +35,8 @@ public class OperationSet {
     public boolean isInstanceOf(FiwareEntity fe) {
         if (entitiySet.isEmpty() || fe == null)
                 return true;
+        if (entitiySet.getFirst() == null)
+            return true;
         return entitiySet.getFirst().getClass().equals(fe.getClass());
     }
 

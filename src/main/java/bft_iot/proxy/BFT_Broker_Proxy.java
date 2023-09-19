@@ -45,6 +45,8 @@ public class BFT_Broker_Proxy extends DefaultSingleRecoverable {
         Iterator<OperationSet> it = operationHistory.iterator();
         while(it.hasNext()) {
             OperationSet crt = it.next();
+            System.out.println("################## addToPending: " + fe);
+            System.out.println(crt);
             if (crt.isInstanceOf(fe)) {
                 if (crt.canAdd(operation)) {
                     crt.addOperation(operation, fe);
