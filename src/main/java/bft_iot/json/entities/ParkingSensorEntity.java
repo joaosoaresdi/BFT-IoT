@@ -41,7 +41,7 @@ public class ParkingSensorEntity extends FiwareCreateEntity {
         public String type;
 
         public String toString() {
-            return String.format("{'value':%f, 'type':'%s'}", value, type);
+            return String.format("{'value':%d, 'type':'%s'}", value, type);
         }
 
         public void setValue(int newValue) {
